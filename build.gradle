@@ -1,0 +1,27 @@
+apply plugin:'java'
+apply plugin: 'jetty'
+
+
+repositories {
+    mavenCentral()
+}
+
+
+dependencies {
+    compile group: 'commons-io', name: 'commons-io', version: '1.4'
+    compile group: 'log4j', name: 'log4j', version: '1.2.15', ext: 'jar'
+}
+
+task init << {
+    description '初始化工程目录'
+    sourceSets*.java.srcDirs*.each { it.mkdirs() }
+    sourceSets*.resources.srcDirs*.each { it.mkdirs() }
+}
+
+jettyRun{
+	webAppSourceDirectory file("$projectDir/src/main/webapp")  
+    httpPort 8088  
+    contextPath project.name  
+    scanIntervalSeconds 0  
+    reload "automatic"  
+}
